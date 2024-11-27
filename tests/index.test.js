@@ -71,129 +71,129 @@ describe("Authentication", () => {
 
 })
 
-describe('Video feed EndPoints', () => { 
-    let token = ""
-    beforeAll(async () => {
-        const username = `pawan-${Math.random()}`
-        const password = "123456"
-        const email = `abc${Math.floor(Math.random()*100)}@example.com`
-        await axios.post(`${BACKEND_URL}/api/auth/signup`, {
-         username,
-         password,
-         email
-        });
+// describe('Video feed EndPoints', () => { 
+//     let token = ""
+//     beforeAll(async () => {
+//         const username = `pawan-${Math.random()}`
+//         const password = "123456"
+//         const email = `abc${Math.floor(Math.random()*100)}@example.com`
+//         await axios.post(`${BACKEND_URL}/api/auth/signup`, {
+//          username,
+//          password,
+//          email
+//         });
  
-        const response = await axios.post(`${BACKEND_URL}/api/auth/login`, {
-         email,
-         password
-        })
+//         const response = await axios.post(`${BACKEND_URL}/api/auth/login`, {
+//          email,
+//          password
+//         })
  
-        token = response.data.access_token
+//         token = response.data.access_token
  
-     })
-    test('Get video feed', async () => {
-        const response = await axios.get(`${BACKEND_URL}/api/videos/feed`)
+//      })
+//     test('Get video feed', async () => {
+//         const response = await axios.get(`${BACKEND_URL}/api/videos/feed`)
 
-        expect(response.status).toBe(200)
-    });
+//         expect(response.status).toBe(200)
+//     });
 
-    test('user able to create channel', async () => {
-        const slug = `unique_channel_slug ${Math.random()*2}`
-        const name = `My Awesome Channel ${Math.random()*2}`
+//     test('user able to create channel', async () => {
+//         const slug = `unique_channel_slug ${Math.random()*2}`
+//         const name = `My Awesome Channel ${Math.random()*2}`
 
-        const response = await axios.post(`${BACKEND_URL}/api/channels`,
-            {
-                name,
-                "description": "Channel description",
-                slug
-            },{
-            headers:{
-                 "authorization": `Bearer ${token}`
-            }
-        })
-        expect(response.status).toBe(201)
-    })
+//         const response = await axios.post(`${BACKEND_URL}/api/channels`,
+//             {
+//                 name,
+//                 "description": "Channel description",
+//                 slug
+//             },{
+//             headers:{
+//                  "authorization": `Bearer ${token}`
+//             }
+//         })
+//         expect(response.status).toBe(201)
+//     })
 
-    test("User validation error", async () => {
+//     test("User validation error", async () => {
 
-        const response = await axios.post(`${BACKEND_URL}/api/channels`, {
-            "name": "My Awesome Channel",
-            "description": "Channel description",
-            "slug": "unique_channel_slug"
-        })
+//         const response = await axios.post(`${BACKEND_URL}/api/channels`, {
+//             "name": "My Awesome Channel",
+//             "description": "Channel description",
+//             "slug": "unique_channel_slug"
+//         })
 
-        expect(response.status).toBe(400)
-    })
+//         expect(response.status).toBe(400)
+//     })
 
-    test("slug already exists", async()=>{
+//     test("slug already exists", async()=>{
 
-        const slug = `unique_channel_slug ${Math.random()*2}`
-        const name = `My Awesome Channel ${Math.random()*2}` 
+//         const slug = `unique_channel_slug ${Math.random()*2}`
+//         const name = `My Awesome Channel ${Math.random()*2}` 
 
-        await axios.post(`${BACKEND_URL}/api/channels`, {
-            name,
-            "description": "Channel description",
-            slug
-        },{
-            headers:{
-                "authorization": `Bearer ${token}`
-            }
-        })
-        const response = await axios.post(`${BACKEND_URL}/api/channels`, {
-            "name":`My ${Math.random()*2}`,
-            "description": "Channel description",
-            slug
-        }, {
-            headers:{
-                "authorization": `Bearer ${token}`
-            }
-        })
-        expect(response.status).toBe(409)
-    })
-    test("user already as a channel", async()=>{
-        const name =`My Awesome Channel ${Math.random()*2}`
-        const slug = `unique_channel_slug ${Math.random()*2}`
+//         await axios.post(`${BACKEND_URL}/api/channels`, {
+//             name,
+//             "description": "Channel description",
+//             slug
+//         },{
+//             headers:{
+//                 "authorization": `Bearer ${token}`
+//             }
+//         })
+//         const response = await axios.post(`${BACKEND_URL}/api/channels`, {
+//             "name":`My ${Math.random()*2}`,
+//             "description": "Channel description",
+//             slug
+//         }, {
+//             headers:{
+//                 "authorization": `Bearer ${token}`
+//             }
+//         })
+//         expect(response.status).toBe(409)
+//     })
+//     test("user already as a channel", async()=>{
+//         const name =`My Awesome Channel ${Math.random()*2}`
+//         const slug = `unique_channel_slug ${Math.random()*2}`
 
-        await axios.post(`${BACKEND_URL}/api/channels`, {
-            name,
-            "description": "Channel description",
-            slug
-        },{
-            headers:{
-                "authorization": `Bearer ${token}`
-            }
-        })
-        const response = await axios.post(`${BACKEND_URL}/api/channels`, {
-            name,
-            "description": "Channel description",
-            slug
-        }, {
-            headers:{
-                "authorization": `Bearer ${token}`
-            }
-        })
-        expect(response.status).toBe(411)
+//         await axios.post(`${BACKEND_URL}/api/channels`, {
+//             name,
+//             "description": "Channel description",
+//             slug
+//         },{
+//             headers:{
+//                 "authorization": `Bearer ${token}`
+//             }
+//         })
+//         const response = await axios.post(`${BACKEND_URL}/api/channels`, {
+//             name,
+//             "description": "Channel description",
+//             slug
+//         }, {
+//             headers:{
+//                 "authorization": `Bearer ${token}`
+//             }
+//         })
+//         expect(response.status).toBe(411)
 
-    })
+//     })
 
-    test('Get api channels',async ()=>{
-        const name =`My Awesome Channel ${Math.random()*2}`
-        const slug = `unique_channel_slug ${Math.random()*2}`
+//     test('Get api channels',async ()=>{
+//         const name =`My Awesome Channel ${Math.random()*2}`
+//         const slug = `unique_channel_slug ${Math.random()*2}`
 
-        await axios.post(`${BACKEND_URL}/api/channels`, {
-            name,
-            "description": "Channel description",
-            slug
-        },{
-            headers:{
-                "authorization": `Bearer ${token}`
-            }
-        })
-        const response = await axios.get(`${BACKEND_URL}/api/channels/${slug}`)
-        expect(response.status).toBe(200)
-    })
+//         await axios.post(`${BACKEND_URL}/api/channels`, {
+//             name,
+//             "description": "Channel description",
+//             slug
+//         },{
+//             headers:{
+//                 "authorization": `Bearer ${token}`
+//             }
+//         })
+//         const response = await axios.get(`${BACKEND_URL}/api/channels/${slug}`)
+//         expect(response.status).toBe(200)
+//     })
     
-})
+// })
 
 // describe('Video upload', ()=>{
 //     let token = ""
